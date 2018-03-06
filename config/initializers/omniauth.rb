@@ -1,4 +1,4 @@
-require 'rspotify/oauth'
+require "rspotify/oauth"
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   scopes = "user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-recently-played"

@@ -43,11 +43,7 @@ class CheckPartyStateJob < ApplicationJob
       wait_for(wait_time)
       return
     end
-
-    # In case I fucked up
-    Rails.logger.info("Unexpectedly reached end of CheckPartyStateJob, waiting #{MAX_WAIT_MS}ms")
-    wait_for(MAX_WAIT_MS)
-  rescue Exception => e
+  rescue StandardError => e
     # In case I really fucked up
     Rails.logger.error("Rescued in CheckPartyStateJob for party #{party_id} named #{party.name}")
     Rails.logger.error(e)
@@ -63,13 +59,13 @@ class CheckPartyStateJob < ApplicationJob
 
   def wait_for(time_ms)
     wait_time_ms = [time_ms, MAX_WAIT_MS].min
-    wait_time_s = (wait_time_ms - CROSSFADE_TIME_MS)/1000
+    wait_time_s = (wait_time_ms - CROSSFADE_TIME_MS) / 1000
     CheckPartyStateJob.set(wait_until: wait_time_s.seconds.from_now).perform_later(party.id)
   end
 
   def wait_for_track(submission)
     return wait_for(MAX_WAIT_MS) unless submission
-    wait_time_ms = (submission.track.duration_ms - CROSSFADE_TIME_MS)/1000
-    wait_for(MAX_WAIT_MS)
+    wait_time_ms = (submission.track.duration_ms - CROSSFADE_TIME_MS) / 1000
+    wait_for(wait_time_ms)
   end
 end

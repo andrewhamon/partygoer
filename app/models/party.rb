@@ -15,10 +15,10 @@ class Party < ApplicationRecord
   belongs_to :owner, class_name: "User"
   has_many :submissions, dependent: :destroy
 
-  scope :near, -> (place, radius=2000) {
-    select("parties.*, earth_distance(ll_to_earth(#{place.lat}, #{place.lng}), ll_to_earth(lat, lng)) AS distance")
-    .where("earth_box(ll_to_earth(#{place.lat}, #{place.lng}), #{radius}) @> ll_to_earth(lat, lng) AND earth_distance(ll_to_earth(#{place.lat}, #{place.lng}), ll_to_earth(lat, lng)) < #{radius}")
-    .order("distance asc")
+  scope :near, ->(place, radius = 2000) {
+    select("parties.*, earth_distance(ll_to_earth(#{place.lat}, #{place.lng}), ll_to_earth(lat, lng)) AS distance").
+      where("earth_box(ll_to_earth(#{place.lat}, #{place.lng}), #{radius}) @> ll_to_earth(lat, lng) AND earth_distance(ll_to_earth(#{place.lat}, #{place.lng}), ll_to_earth(lat, lng)) < #{radius}").
+      order("distance asc")
   }
 
   def play_next_track!
@@ -43,6 +43,6 @@ class Party < ApplicationRecord
 
     owner.spotify_user&.play(next_submission.track)
     next_submission.update(playing: true)
-    return next_submission
+    next_submission
   end
 end

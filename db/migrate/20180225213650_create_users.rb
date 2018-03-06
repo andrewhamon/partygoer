@@ -7,6 +7,6 @@ class CreateUsers < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
-    add_index :users, 'll_to_earth(lat, lng)', using: :gist
+    add_index :users, "ll_to_earth(lat, lng)", using: :gist
   end
 end

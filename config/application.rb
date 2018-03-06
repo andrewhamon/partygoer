@@ -1,4 +1,4 @@
-require_relative 'boot'
+require_relative "boot"
 
 require "rails"
 # Pick the frameworks you want:
@@ -34,14 +34,14 @@ module Partygoer
 
     # Add some arbitrarily large thread pool size so that changeing songs (hopefully) never has to wait
     config.active_job.queue_adapter = ActiveJob::QueueAdapters::AsyncAdapter.new min_threads: 1,
-      max_threads: 30,
-      idletime: 600.seconds
+                                                                                 max_threads: 30,
+                                                                                 idletime: 600.seconds
 
-      config.middleware.insert_before 0, Rack::Cors do
-        allow do
-          origins '*'
-          resource '*', :headers => :any, :methods => [:head, :get, :post, :put, :delete, :options]
-        end
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins "*"
+        resource "*", headers: :any, methods: %i[head get post put delete options]
       end
+    end
   end
 end

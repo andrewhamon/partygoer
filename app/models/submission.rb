@@ -25,10 +25,10 @@ class Submission < ApplicationRecord
   scope :unplayed, -> { where(playing: false, played_at: nil, skipped_at: nil).order(score: :desc, id: :asc) }
 
   def update_score!
-    self.update_attributes(score: votes.sum(:value))
+    update_attributes(score: votes.sum(:value))
 
     if score <= SKIP_THRESHOLD
-      self.party.skip_to_next_track!
+      party.skip_to_next_track!
     end
   end
 end

@@ -22,7 +22,7 @@ class SpotifyUser < ApplicationRecord
   end
 
   def select_device(device_id)
-    result = api_request(:put, "/me/player", device_ids: [device_id])
+    api_request(:put, "/me/player", device_ids: [device_id])
     self.device_id = device_id
     save!
   end
@@ -31,12 +31,10 @@ class SpotifyUser < ApplicationRecord
     api_request(:get, "/me/player")
   end
 
-  def play(track=nil)
-    if track
-      payload = {uris: [track.uri]}
-    else
-      payload = nil
-    end
+  def play(track = nil)
+    payload = if track
+                { uris: [track.uri] }
+              end
 
     api_request(:put, "/me/player/play", payload)
   end
@@ -51,12 +49,12 @@ class SpotifyUser < ApplicationRecord
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_PEER
 
-    body = URI.encode_www_form({
+    body = URI.encode_www_form(
       refresh_token: refresh_token,
-      grant_type: "refresh_token"
-    })
+      grant_type: "refresh_token",
+    )
 
-    req =  Net::HTTP::Post.new(uri)
+    req = Net::HTTP::Post.new(uri)
     req.basic_auth Rails.configuration.spotify_client_id, Rails.configuration.spotify_client_secret
     req.add_field "Content-Type", "application/x-www-form-urlencoded; charset=utf-8"
     req.body = body

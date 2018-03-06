@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
 
   def spotify_callback
     user = User.find(session[:user_id])
-    rspotify_user = RSpotify::User.new(request.env['omniauth.auth'])
+    rspotify_user = RSpotify::User.new(request.env["omniauth.auth"])
     spotify_user = SpotifyUser.find_or_initialize_by(sid: rspotify_user.id)
 
     spotify_user.token = rspotify_user.credentials.token

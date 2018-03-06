@@ -19,7 +19,7 @@ class Track < ApplicationRecord
                  :available_markets
 
   def self.from_rspotify_track(track)
-    t = self.find_or_initialize_by(sid: track.id)
+    t = find_or_initialize_by(sid: track.id)
     t.metadata = track.as_json
     t
   end
@@ -27,6 +27,6 @@ class Track < ApplicationRecord
   def self.from_spotify_id(id)
     id = id.split(":").last
     track = RSpotify::Track.find(id)
-    self.from_rspotify_track(track)
+    from_rspotify_track(track)
   end
 end
