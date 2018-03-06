@@ -36,5 +36,12 @@ module Partygoer
     config.active_job.queue_adapter = ActiveJob::QueueAdapters::AsyncAdapter.new min_threads: 1,
       max_threads: 30,
       idletime: 600.seconds
+
+      config.middleware.insert_before 0, Rack::Cors do
+        allow do
+          origins '*'
+          resource '*', :headers => :any, :methods => [:head, :get, :post, :put, :delete, :options]
+        end
+      end
   end
 end
