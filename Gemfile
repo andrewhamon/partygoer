@@ -17,6 +17,8 @@ gem "jbuilder", "~> 2.5"
 gem "rack-cors", require: "rack/cors"
 gem "rspotify"
 
+gem "graphql"
+
 group :development, :test do
   gem "annotate"
   gem "byebug", platforms: %i[mri mingw x64_mingw]
@@ -27,6 +29,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "graphiql-rails"
   gem "listen", ">= 3.0.5", "< 3.2"
   gem "web-console", ">= 3.3.0"
 end
