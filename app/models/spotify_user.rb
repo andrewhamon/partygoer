@@ -23,7 +23,6 @@ class SpotifyUser < ApplicationRecord
 
   def select_device(device_id)
     result = api_request(:put, "/me/player", device_ids: [device_id])
-    puts result
     self.device_id = device_id
     save!
   end

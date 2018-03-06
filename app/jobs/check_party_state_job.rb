@@ -50,8 +50,8 @@ class CheckPartyStateJob < ApplicationJob
   rescue Exception => e
     # In case I really fucked up
     Rails.logger.error("Rescued in CheckPartyStateJob for party #{party_id} named #{party.name}")
-    puts e
-    puts e.backtrace
+    Rails.logger.error(e)
+    Rails.logger.error(e.backtrace)
     wait_for(MAX_WAIT_MS)
   end
 
