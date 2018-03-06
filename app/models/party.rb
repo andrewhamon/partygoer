@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: parties
+#
+#  id         :integer          not null, primary key
+#  owner_id   :integer          not null
+#  name       :string           not null
+#  lat        :float            not null
+#  lng        :float            not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 class Party < ApplicationRecord
   belongs_to :owner, class_name: "User"
   has_many :submissions, dependent: :destroy
