@@ -10,7 +10,7 @@ Mutations::CreateSubmission = GraphQL::Relay::Mutation.define do
 
     Submission.create(
       track: track,
-      party: Party.first,
+      party: Party.current,
       user: ctx[:current_user],
     )
   end

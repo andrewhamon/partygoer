@@ -1,6 +1,10 @@
 Types::QueryType = GraphQL::ObjectType.define do
   name "Query"
 
+  field :party, Types::PartyType do
+    resolve ->(*) { Party.current }
+  end
+
   field :search_results, types[Types::TrackType] do
     argument :query, !types.String
 

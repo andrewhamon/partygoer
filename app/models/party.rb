@@ -14,6 +14,9 @@
 class Party < ApplicationRecord
   belongs_to :owner, class_name: "User"
   has_many :submissions, dependent: :destroy
+  has_one :now_playing, ->{ playing }, class_name: "Submission"
+
+  scope :current, -> { first }
 
   scope :near, ->(place, radius = 2000) {
     select("parties.*, earth_distance(ll_to_earth(#{place.lat}, #{place.lng}), ll_to_earth(lat, lng)) AS distance").
