@@ -23,8 +23,6 @@ class Submission < ApplicationRecord
   has_many :votes, dependent: :destroy
   has_one :user_vote, class_name: "Vote"
 
-  scope :with_user_vote, ->(user) { user && includes(:user_vote).where(votes: { user: user }) }
-
   scope :playing, -> { where(playing: true) }
   scope :unplayed, -> { where(playing: false, played_at: nil, skipped_at: nil).queue_order }
   scope :queued_or_played, -> { where(skipped_at: nil, played_at: nil) }

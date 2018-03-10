@@ -4,10 +4,11 @@ Types::PartyType = GraphQL::ObjectType.define do
   field :name, !types.String
   field :active_submissions, !types[Types::SubmissionType] do
     resolve ->(obj, _, ctx) do
+      ctx[:current_user].reload
+
       obj.
         active_submissions.
-        includes(:track).
-        with_user_vote(ctx[:current_user])
+        includes(:track)
     end
   end
 end
