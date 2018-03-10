@@ -41,13 +41,6 @@ class User < ApplicationRecord
 
   def find_vote_on(submission)
     votes.index_by(&:submission_id)[submission.id]
-    # # vote_cache[submission.id]
-    # votes.find_by(submission: submission)
-  end
-
-  def reset_vote_cache
-    binding.pry
-    votes.reload
   end
 
   private

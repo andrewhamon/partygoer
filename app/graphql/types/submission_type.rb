@@ -7,7 +7,7 @@ Types::SubmissionType = GraphQL::ObjectType.define do
   field :playing, !types.Boolean
   field :myVote, Types::VoteType do
     resolve ->(obj, _, ctx) do
-      ctx[:current_user].find_vote_on(obj)
+      ctx[:current_user]&.find_vote_on(obj)
     end
   end
 end
