@@ -85,8 +85,5 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.web_socket_server_url = ENV.fetch("ACTIONCABLE_URL")
-  config.action_cable.allowed_request_origins = [
-    "https://partygoer.io",
-    "https://partygoer-web.herokuapp.com",
-  ]
+  config.action_cable.disable_request_forgery_protection = true
 end
