@@ -5,14 +5,9 @@ Types::QueryType = GraphQL::ObjectType.define do
     resolve ->(*) { Party.current }
   end
 
-  field :search_results, types[Types::TrackType] do
+  field :search_results, types[Types::TrackSearchType] do
     argument :query, !types.String
 
-    resolve ->(_obj, args, _ctx) do
-      JSON.parse(
-        RSpotify::Track.search(args["query"]).to_json,
-        object_class: OpenStruct,
-      )
-    end
+    resolve ->(_, args, _) { RSpotify::Track.search(args["query"]) }
   end
 end

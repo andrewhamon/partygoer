@@ -1,5 +1,5 @@
-Types::TrackType = GraphQL::ObjectType.define do
-  name "Track"
+Types::TrackSearchType = GraphQL::ObjectType.define do
+  name "TrackSearch"
 
   field :id, !types.ID
   field :name, !types.String
@@ -7,14 +7,12 @@ Types::TrackType = GraphQL::ObjectType.define do
   field :href, !types.String
 
   field :artists, !types[!types.String] do
-    resolve ->(obj, _, _) do
-      obj.artists.map { |artist| artist["name"] }
-    end
+    resolve ->(obj, _, _) { obj.artists.map(&:name) }
   end
 
   field :image, !types.String do
     resolve ->(obj, _, _) do
-      obj.album["images"].max_by { |img| img["width"] }["url"]
+      obj.album.images.max_by(&:width).url
     end
   end
 end

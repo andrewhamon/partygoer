@@ -12,7 +12,7 @@
 class Track < ApplicationRecord
   has_many :submissions, dependent: :destroy
 
-  openstruct_accessor :metadata, :uri, :href, :name, :type, :album, :artists,
+  store_accessor :metadata, :uri, :href, :name, :type, :album, :artists,
                  :explicit, :played_at, :popularity, :disc_number, :duration_ms,
                  :is_playable, :linked_from, :preview_url, :context_type,
                  :external_ids, :track_number, :external_urls,
