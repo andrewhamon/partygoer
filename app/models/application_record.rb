@@ -6,12 +6,11 @@ class ApplicationRecord < ActiveRecord::Base
       define_method(field_name) do
         return instance_variable_get("@#{field_name}") if instance_variable_get("@#{field_name}")
 
+        struct = JSON.parse(send(column).to_json, object_class: OpenStruct)
+
         instance_variable_set(
           "@#{field_name}",
-          JSON.parse(
-            send(column).with_indifferent_access[field_name].to_json,
-            object_class: OpenStruct,
-          ),
+          struct.send(field_name),
         )
       end
     end
