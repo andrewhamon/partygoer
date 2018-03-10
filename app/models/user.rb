@@ -22,15 +22,14 @@ class User < ApplicationRecord
 
   def upvote!(submission)
     vote = votes.find_or_initialize_by(submission: submission)
-    vote.value = 1
+    vote.update!(value: 1)
     vote.save!
     submission.update_score!
   end
 
   def downvote!(submission)
     vote = votes.find_or_initialize_by(submission: submission)
-    vote.value = -1
-    vote.save!
+    vote.update!(value: -1)
     submission.update_score!
   end
 

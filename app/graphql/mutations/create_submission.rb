@@ -8,7 +8,7 @@ Mutations::CreateSubmission = GraphQL::Relay::Mutation.define do
     track = Track.from_spotify_id(args[:spotify_track_id])
     track.save!
 
-    Submission.create(
+    Submission.create!(
       track: track,
       party: Party.current,
       user: ctx[:current_user],
