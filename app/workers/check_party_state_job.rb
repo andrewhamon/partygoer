@@ -60,7 +60,7 @@ class CheckPartyStateJob
   def wait_for(time_ms)
     wait_time_ms = [time_ms, MAX_WAIT_MS].min
     wait_time_s = (wait_time_ms - CROSSFADE_TIME_MS) / 1000
-    CheckPartyStateJob.set(wait_until: wait_time_s.seconds.from_now).perform_later(party.id)
+    CheckPartyStateJob.perform_at(wait_time_s.seconds.from_now, party.id)
   end
 
   def wait_for_track(submission)
