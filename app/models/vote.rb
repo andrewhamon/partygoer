@@ -12,7 +12,7 @@
 
 class Vote < ApplicationRecord
   belongs_to :user
-  belongs_to :submission, touch: true
+  belongs_to :submission
 
   validates :submission_id, uniqueness: { scope: :user_id }
   validates :value, inclusion: { in: [-1, 1] }

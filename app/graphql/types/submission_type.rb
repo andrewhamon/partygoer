@@ -6,6 +6,6 @@ Types::SubmissionType = GraphQL::ObjectType.define do
   field :score, !types.Int
   field :playing, !types.Boolean
   field :myVote, Types::VoteType do
-    resolve ->(obj, _, ctx) { obj.votes.find_by(user: ctx[:current_user]) }
+    resolve ->(obj, _, ctx) { obj.user_vote }
   end
 end

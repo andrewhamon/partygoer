@@ -25,6 +25,8 @@ class Party < ApplicationRecord
       order("distance asc")
   }
 
+  after_touch :push_to_channel
+
   def play_next_track!
     submissions.where(playing: true).update_all(playing: false, played_at: Time.now)
     play_next_in_queue
@@ -48,5 +50,9 @@ class Party < ApplicationRecord
     owner.spotify_user&.play(next_submission.track)
     next_submission.update(playing: true)
     next_submission
+  end
+
+  def push_to_channel
+    PartygoerSchema.subscriptions.trigger("partyChanged", {}, self)
   end
 end
