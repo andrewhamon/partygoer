@@ -23,7 +23,9 @@ class Submission < ApplicationRecord
   has_many :votes, dependent: :destroy
 
   scope :playing, -> { where(playing: true) }
-  scope :unplayed, -> { where(playing: false, played_at: nil, skipped_at: nil).order(score: :desc, id: :asc) }
+  scope :unplayed, -> { where(playing: false, played_at: nil, skipped_at: nil).queue_order }
+  scope :queued_or_played, -> { where(skipped_at: nil, played_at: nil) }
+  scope :queue_order, -> { order(playing: :desc, score: :desc, updated_at: :desc) }
 
   def update_score!
     update_attributes(score: votes.sum(:value))

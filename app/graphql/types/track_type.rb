@@ -3,12 +3,18 @@ Types::TrackType = GraphQL::ObjectType.define do
 
   field :id, !types.ID
   field :name, !types.String
-  field :artists, !types[Types::ArtistType]
   field :uri, !types.String
   field :href, !types.String
 
-  field :images do
-    type !types[Types::ImageType]
-    resolve ->(obj, _, _) { obj.album.images }
+  field :artists, !types[!types.String] do
+    resolve ->(obj, _, _) do
+      obj.artists.map(&:name)
+    end
+  end
+
+  field :image, !types.String do
+    resolve ->(obj, _, _) do
+      obj.album.images.max_by(&:width).url
+    end
   end
 end

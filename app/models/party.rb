@@ -14,6 +14,7 @@
 class Party < ApplicationRecord
   belongs_to :owner, class_name: "User"
   has_many :submissions, dependent: :destroy
+  has_many :active_submissions, -> { queued_or_played.queue_order }, class_name: "Submission", dependent: :destroy
   has_one :now_playing, ->{ playing }, class_name: "Submission"
 
   scope :current, -> { first }
