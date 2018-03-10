@@ -8,9 +8,11 @@ end
 gem "pg", ">= 0.18", "< 2.0"
 gem "puma", "~> 3.7"
 gem "rails", "~> 5.1.5"
-gem "redis"
 gem "sass-rails", "~> 5.0"
 gem "uglifier", ">= 1.3.0"
+
+gem "redis"
+gem "sidekiq"
 
 gem "rack-cors", require: "rack/cors"
 gem "rspotify"

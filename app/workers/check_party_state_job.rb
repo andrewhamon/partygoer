@@ -1,5 +1,5 @@
-class CheckPartyStateJob < ApplicationJob
-  queue_as :default
+class CheckPartyStateJob
+  include Sidekiq::Worker
 
   # Not real crossfade, but soonest we change tracks
   CROSSFADE_TIME_MS = 500
