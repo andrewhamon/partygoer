@@ -26,7 +26,7 @@ class Submission < ApplicationRecord
   scope :playing, -> { where(playing: true) }
   scope :unplayed, -> { where(playing: false, played_at: nil, skipped_at: nil).queue_order }
   scope :queued_or_played, -> { where(skipped_at: nil, played_at: nil) }
-  scope :queue_order, -> { order(playing: :desc, score: :desc, updated_at: :desc) }
+  scope :queue_order, -> { order(playing: :desc, score: :desc, created_at: :asc) }
 
   def update_score!
     update_attributes(score: votes.sum(:value))
