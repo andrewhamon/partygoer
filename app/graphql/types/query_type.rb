@@ -7,6 +7,7 @@ BANNED_TRACKS = [
   "wonderwall",
   "mambo",
   "white noise",
+  "numa",
 ]
 
 Types::QueryType = GraphQL::ObjectType.define do
