@@ -24,9 +24,9 @@ group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "capybara", "~> 2.13"
   gem "dotenv-rails"
+  gem "pry-rails"
   gem "rubocop"
   gem "selenium-webdriver"
-  gem "pry-rails"
 end
 
 group :development do

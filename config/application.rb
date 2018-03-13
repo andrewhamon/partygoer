@@ -28,7 +28,7 @@ module Partygoer
       ActiveJob::QueueAdapters::AsyncAdapter.new(
         min_threads: 1,
         max_threads: 30,
-        idletime: 600.seconds
+        idletime: 600.seconds,
       )
   end
 end

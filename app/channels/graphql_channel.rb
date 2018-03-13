@@ -12,12 +12,12 @@ class GraphqlChannel < ApplicationCable::Channel
       channel: self,
     }
 
-    result = PartygoerSchema.execute({
+    result = PartygoerSchema.execute(
       query: query,
       context: context,
       variables: variables,
-      operation_name: operation_name
-    })
+      operation_name: operation_name,
+    )
 
     payload = {
       result: result.subscription? ? {} : result.to_h,
@@ -34,9 +34,9 @@ class GraphqlChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    @subscription_ids.each { |sid|
+    @subscription_ids.each do |sid|
       PartygoerSchema.subscriptions.delete_subscription(sid)
-    }
+    end
   end
 
   private
