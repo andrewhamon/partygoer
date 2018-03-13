@@ -21,7 +21,6 @@ class Submission < ApplicationRecord
   belongs_to :party, touch: true
 
   has_many :votes, dependent: :destroy
-  has_one :user_vote, class_name: "Vote"
 
   scope :playing, -> { where(playing: true) }
   scope :unplayed, -> { where(playing: false, played_at: nil, skipped_at: nil).queue_order }
@@ -32,7 +31,7 @@ class Submission < ApplicationRecord
     update_attributes(score: votes.sum(:value))
 
     if score <= SKIP_THRESHOLD
-      party.skip_to_next_track!
+      party.play_next_track!
     end
   end
 end

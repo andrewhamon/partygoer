@@ -4,7 +4,7 @@ Mutations::CreateUser = GraphQL::Relay::Mutation.define do
 
   resolve ->(_, _, ctx) do
     {
-      token: (ctx[:current_user] || User.create!).token
+      token: (ctx[:current_user] || User.create!).token,
     }
   end
 end

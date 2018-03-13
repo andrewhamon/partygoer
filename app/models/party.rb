@@ -14,8 +14,7 @@
 class Party < ApplicationRecord
   belongs_to :owner, class_name: "User"
   has_many :submissions, dependent: :destroy
-  has_many :active_submissions, -> { queued_or_played.queue_order }, class_name: "Submission", dependent: :destroy
-  has_one :now_playing, ->{ playing }, class_name: "Submission"
+  has_many :active_submissions, -> { queued_or_played.queue_order }, class_name: "Submission"
 
   scope :current, -> { first }
 
@@ -30,15 +29,6 @@ class Party < ApplicationRecord
   def play_next_track!
     submissions.where(playing: true).update_all(playing: false, played_at: Time.now)
     play_next_in_queue
-  end
-
-  def skip_to_next_track!
-    submissions.where(playing: true).update_all(playing: false, skipped_at: Time.now)
-    play_next_in_queue
-  end
-
-  def now_playing
-    submissions.where(playing: true).first
   end
 
   private

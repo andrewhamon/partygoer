@@ -1,6 +1,6 @@
 Mutations::CreateVote = GraphQL::Relay::Mutation.define do
   name "CreateVote"
-  return_type Types::SubmissionType
+  return_type !Types::PartyType
 
   input_field :submissionId, !types.ID
   input_field :direction, !Types::VoteDirectionType
@@ -14,6 +14,6 @@ Mutations::CreateVote = GraphQL::Relay::Mutation.define do
     when "DOWN" then user.downvote!(submission)
     end
 
-    submission
+    submission.party
   end
 end

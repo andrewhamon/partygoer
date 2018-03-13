@@ -1,10 +1,7 @@
-Types::TrackType = GraphQL::ObjectType.define do
-  name "Track"
+Types::InternalTrackType = GraphQL::ObjectType.define do
+  interfaces [Types::TrackInterface]
 
-  field :id, !types.ID
-  field :name, !types.String
-  field :uri, !types.String
-  field :href, !types.String
+  name "InternalTrack"
 
   field :artists, !types[!types.String] do
     resolve ->(obj, _, _) do

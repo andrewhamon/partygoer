@@ -1,11 +1,11 @@
 Mutations::CreateSubmission = GraphQL::Relay::Mutation.define do
   name "CreateSubmission"
-  return_type Types::SubmissionType
+  return_type !Types::SubmissionType
 
-  input_field :spotify_track_id, !types.String
+  input_field :spotifyTrackId, !types.String
 
-  resolve ->(obj, args, ctx) do
-    track = Track.from_spotify_id(args[:spotify_track_id])
+  resolve ->(_obj, args, ctx) do
+    track = Track.from_spotify_id(args[:spotifyTrackId])
     track.save!
 
     submission = Submission.create!(
