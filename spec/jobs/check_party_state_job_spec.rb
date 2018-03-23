@@ -13,7 +13,7 @@ RSpec.describe CheckPartyStateJob, type: :job do
   end
 
   context "nothing is playing" do
-    let(:playback_state) { { playing: false, progress_ms: 0, duration_ms: 100_000 } }
+    let(:playback_state) { { playing: false, progress: 0.minutes, duration: 2.minutes } }
 
     it "starts playing" do
       create(:submission, party: party)
@@ -26,7 +26,7 @@ RSpec.describe CheckPartyStateJob, type: :job do
   end
 
   context "something is playing, but it's far from over" do
-    let(:playback_state) { { playing: true, progress_ms: 0, duration_ms: 100_000 } }
+    let(:playback_state) { { playing: true, progress: 0.minutes, duration: 2.minutes } }
 
     it "doesn't change what's currently playing" do
       playing_submission = create(:submission, :playing, party: party)
@@ -40,7 +40,7 @@ RSpec.describe CheckPartyStateJob, type: :job do
   end
 
   context "we're close to the end of this track" do
-    let(:playback_state) { { playing: true, progress_ms: 999, duration_ms: 1000 } }
+    let(:playback_state) { { playing: true, progress: 4.999.minutes, duration: 5.minutes } }
 
     it "skips to the next track" do
       ending = create(:submission, :playing, party: party)
@@ -62,12 +62,6 @@ RSpec.describe CheckPartyStateJob, type: :job do
   end
 
   def fake_playback_state
-    PlaybackState.from_spotify_hash(
-      "is_playing" => playback_state[:playing],
-      "progress_ms" => playback_state[:progress_ms],
-      "item" => {
-        "duration_ms" => playback_state[:duration_ms],
-      },
-    )
+    PlaybackState.new(playback_state)
   end
 end
