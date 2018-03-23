@@ -31,6 +31,10 @@ class Party < ApplicationRecord
     play_next_in_queue
   end
 
+  def playback_state
+    owner.spotify_user&.playback_state
+  end
+
   private
 
   def play_next_in_queue

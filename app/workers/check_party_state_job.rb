@@ -32,11 +32,8 @@ class CheckPartyStateJob
 
   private
 
+  delegate :playback_state, to: :party
   delegate :playing?, :time_left, :track_almost_over?, to: :playback_state
-
-  def playback_state
-    party.owner.spotify_user.playback_state
-  end
 
   def play_next_track_and_requeue
     now_playing = party.play_next_track!
