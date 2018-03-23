@@ -20,27 +20,18 @@ class CheckPartyStateJob
 
     # If nothing playing, play the next track
     unless playing?
-      Rails.logger.info("Nothing playing, playing next")
       now_playing = party.play_next_track!
       wait_for_track(now_playing)
       return
     end
 
     if track_almost_over?
-      Rails.logger.info("Close to new track, playing next")
       now_playing = party.play_next_track!
       wait_for_track(now_playing)
     else
-      Rails.logger.info("Next track far away, waiting")
       wait_time = time_left_ms.to_f - TRACK_CHANGE_THRESHOLD
       wait_for(wait_time)
     end
-  rescue StandardError => e
-    # In case I really fucked up
-    Rails.logger.error("Rescued in CheckPartyStateJob for party #{party_id} named #{party.name}")
-    Rails.logger.error(e)
-    Rails.logger.error(e.backtrace)
-    wait_for(MAX_WAIT_MS)
   end
 
   private
