@@ -3,8 +3,8 @@ class CheckPartyStateJob
 
   attr_reader :party
 
-  # Not real crossfade, but soonest we change tracks
-  CROSSFADE_TIME_MS = 500
+  # Change to the next track slightly before the current one ends
+  TRACK_CHANGE_THRESHOLD = 500
 
   MAX_WAIT_MS = 60 * 1000
 
@@ -32,7 +32,7 @@ class CheckPartyStateJob
       wait_for_track(now_playing)
     else
       Rails.logger.info("Next track far away, waiting")
-      wait_time = time_left_ms.to_f - CROSSFADE_TIME_MS
+      wait_time = time_left_ms.to_f - TRACK_CHANGE_THRESHOLD
       wait_for(wait_time)
     end
   rescue StandardError => e
@@ -62,7 +62,7 @@ class CheckPartyStateJob
   end
 
   def track_almost_over?
-    time_left_ms < CROSSFADE_TIME_MS
+    time_left_ms < TRACK_CHANGE_THRESHOLD
   end
 
   def playback_state
@@ -71,13 +71,13 @@ class CheckPartyStateJob
 
   def wait_for(time_ms)
     wait_time_ms = [time_ms, MAX_WAIT_MS].min
-    wait_time_s = (wait_time_ms - CROSSFADE_TIME_MS) / 1000
+    wait_time_s = (wait_time_ms - TRACK_CHANGE_THRESHOLD) / 1000
     CheckPartyStateJob.perform_at(wait_time_s.seconds.from_now, party.id)
   end
 
   def wait_for_track(submission)
     return wait_for(MAX_WAIT_MS) unless submission
-    wait_time_ms = (submission.track.duration_ms - CROSSFADE_TIME_MS) / 1000
+    wait_time_ms = (submission.track.duration_ms - TRACK_CHANGE_THRESHOLD) / 1000
     wait_for(wait_time_ms)
   end
 end
