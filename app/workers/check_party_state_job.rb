@@ -10,14 +10,13 @@ class CheckPartyStateJob
 
   def perform(party_id)
     @party = Party.find_by(id: party_id)
+
     # In case party gets destroyed
     return unless party
     # Stop checking if party is dead
     return if 6.hours.ago > party.updated_at
     # Cant really do anything if not connected to a spotify account
     return unless party.owner.spotify_user
-
-    playback_state = party.owner.spotify_user.playback_state
 
     is_playing = playback_state["is_playing"]
     # If nothing playing, play the next track
@@ -54,6 +53,10 @@ class CheckPartyStateJob
   end
 
   private
+
+  def playback_state
+    party.owner.spotify_user.playback_state
+  end
 
   def wait_for(time_ms)
     wait_time_ms = [time_ms, MAX_WAIT_MS].min
