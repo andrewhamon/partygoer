@@ -24,6 +24,7 @@ group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "capybara", "~> 2.13"
   gem "dotenv-rails"
+  gem "factory_bot_rails"
   gem "pry-rails"
   gem "rubocop"
   gem "selenium-webdriver"
@@ -33,6 +34,10 @@ group :development do
   gem "graphiql-rails"
   gem "listen", ">= 3.0.5", "< 3.2"
   gem "web-console", ">= 3.3.0"
+end
+
+group :test do
+  gem "rspec-rails"
 end
 
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
