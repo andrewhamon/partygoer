@@ -6,5 +6,5 @@ PartygoerSchema = GraphQL::Schema.define do
   subscription(Types::SubscriptionType)
 
   # TODO: figure out why this is needed
-  resolve_type ->(obj, ctx) {}
+  resolve_type ->(type, obj, ctx) {}
 end
