@@ -24,8 +24,7 @@ class CheckPartyStateJob
     end
 
     if track_almost_over?
-      now_playing = party.play_next_track!
-      wait_for_track(now_playing)
+      play_next_track_and_requeue
     else
       wait_time = time_left_ms.to_f - TRACK_CHANGE_THRESHOLD
       wait_for(wait_time)
@@ -56,6 +55,11 @@ class CheckPartyStateJob
 
   def playback_state
     party.owner.spotify_user.playback_state
+  end
+
+  def play_next_track_and_requeue
+    now_playing = party.play_next_track!
+    wait_for_track(now_playing)
   end
 
   def wait_for(time_ms)
