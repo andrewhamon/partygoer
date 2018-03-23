@@ -18,9 +18,8 @@ class CheckPartyStateJob
     # Cant really do anything if not connected to a spotify account
     return unless party.owner.spotify_user
 
-    is_playing = playback_state["is_playing"]
     # If nothing playing, play the next track
-    unless is_playing
+    unless playing?
       Rails.logger.info("Nothing playing, playing next")
       now_playing = party.play_next_track!
       wait_for_track(now_playing)
@@ -53,6 +52,10 @@ class CheckPartyStateJob
   end
 
   private
+
+  def playing?
+    playback_state["is_playing"]
+  end
 
   def playback_state
     party.owner.spotify_user.playback_state
