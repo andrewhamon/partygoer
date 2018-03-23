@@ -42,16 +42,12 @@ class CheckPartyStateJob
 
   def requeue_after(duration)
     adjusted_duration = [duration, MAX_WAIT].min - TRACK_CHANGE_THRESHOLD
-    CheckPartyStateJob.perform_at(adjusted_duration.from_now, party.id)
+    CheckPartyStateJob.perform_in(adjusted_duration, party.id)
   end
 
   def requeue_after_submission(submission)
     return requeue_after(MAX_WAIT) unless submission
 
-    requeue_after(submission_duration(submission))
-  end
-
-  def submission_duration(submission)
-    (submission.track.duration_ms / 1000).seconds
+    requeue_after(submission.track.duration)
   end
 end
