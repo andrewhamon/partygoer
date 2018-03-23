@@ -1,6 +1,8 @@
 class CheckPartyStateJob
   include Sidekiq::Worker
 
+  attr_reader :party
+
   # Not real crossfade, but soonest we change tracks
   CROSSFADE_TIME_MS = 500
 
@@ -52,10 +54,6 @@ class CheckPartyStateJob
   end
 
   private
-
-  def party
-    @party
-  end
 
   def wait_for(time_ms)
     wait_time_ms = [time_ms, MAX_WAIT_MS].min
