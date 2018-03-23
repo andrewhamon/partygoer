@@ -26,18 +26,14 @@ class CheckPartyStateJob
       return
     end
 
-    # If almost over, go ahead and play next track
-    if time_left_ms < CROSSFADE_TIME_MS
+    if track_almost_over?
       Rails.logger.info("Close to new track, playing next")
       now_playing = party.play_next_track!
       wait_for_track(now_playing)
-      return
-    # else wait til end of current track
     else
       Rails.logger.info("Next track far away, waiting")
       wait_time = time_left_ms.to_f - CROSSFADE_TIME_MS
       wait_for(wait_time)
-      return
     end
   rescue StandardError => e
     # In case I really fucked up
@@ -63,6 +59,10 @@ class CheckPartyStateJob
 
   def time_left_ms
     duration_ms - progress_ms
+  end
+
+  def track_almost_over?
+    time_left_ms < CROSSFADE_TIME_MS
   end
 
   def playback_state
