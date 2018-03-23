@@ -31,6 +31,6 @@ class Track < ApplicationRecord
   end
 
   def duration
-    (duration_ms / 1000).seconds
+    (duration_ms / 1000.0).seconds
   end
 end
