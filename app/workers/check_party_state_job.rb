@@ -18,10 +18,8 @@ class CheckPartyStateJob
     # Cant really do anything if not connected to a spotify account
     return unless party.owner.spotify_user
 
-    # If nothing playing, play the next track
-    unless playing?
-      now_playing = party.play_next_track!
-      wait_for_track(now_playing)
+    if paused?
+      play_next_track_and_requeue
       return
     end
 
@@ -36,8 +34,8 @@ class CheckPartyStateJob
 
   private
 
-  def playing?
-    playback_state["is_playing"]
+  def paused?
+    !playback_state["is_playing"]
   end
 
   def progress_ms
