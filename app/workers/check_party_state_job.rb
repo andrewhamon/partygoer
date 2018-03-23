@@ -26,10 +26,6 @@ class CheckPartyStateJob
       return
     end
 
-    progress_ms = playback_state["progress_ms"]
-    duration_ms = playback_state["item"]["duration_ms"]
-    time_left_ms = duration_ms - progress_ms
-
     # If almost over, go ahead and play next track
     if time_left_ms < CROSSFADE_TIME_MS
       Rails.logger.info("Close to new track, playing next")
@@ -55,6 +51,18 @@ class CheckPartyStateJob
 
   def playing?
     playback_state["is_playing"]
+  end
+
+  def progress_ms
+    playback_state["progress_ms"]
+  end
+
+  def duration_ms
+    playback_state["item"]["duration_ms"]
+  end
+
+  def time_left_ms
+    duration_ms - progress_ms
   end
 
   def playback_state
