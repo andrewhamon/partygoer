@@ -62,12 +62,12 @@ RSpec.describe CheckPartyStateJob, type: :job do
   end
 
   def fake_playback_state
-    {
+    PlaybackState.from_spotify_hash(
       "is_playing" => playback_state[:playing],
       "progress_ms" => playback_state[:progress_ms],
       "item" => {
         "duration_ms" => playback_state[:duration_ms],
       },
-    }
+    )
   end
 end

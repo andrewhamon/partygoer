@@ -4,9 +4,10 @@ class CheckPartyStateJob
   attr_reader :party
 
   # Change to the next track slightly before the current one ends
-  TRACK_CHANGE_THRESHOLD = 500
+  TRACK_CHANGE_THRESHOLD = 0.5.seconds
 
-  MAX_WAIT_MS = 60 * 1000
+  # Re-run this job at least this often
+  MAX_WAIT = 60.seconds
 
   def perform(party_id)
     @party = Party.find_by(id: party_id)
@@ -18,40 +19,20 @@ class CheckPartyStateJob
     # Cant really do anything if not connected to a spotify account
     return unless party.owner.spotify_user
 
-    if paused?
-      play_next_track_and_requeue
-      return
-    end
-
-    if track_almost_over?
-      play_next_track_and_requeue
+    if playing?
+      if track_almost_over?
+        play_next_track_and_requeue
+      else
+        requeue_after(time_left)
+      end
     else
-      wait_time = time_left_ms.to_f - TRACK_CHANGE_THRESHOLD
-      wait_for(wait_time)
+      play_next_track_and_requeue
     end
   end
 
   private
 
-  def paused?
-    !playback_state["is_playing"]
-  end
-
-  def progress_ms
-    playback_state["progress_ms"]
-  end
-
-  def duration_ms
-    playback_state["item"]["duration_ms"]
-  end
-
-  def time_left_ms
-    duration_ms - progress_ms
-  end
-
-  def track_almost_over?
-    time_left_ms < TRACK_CHANGE_THRESHOLD
-  end
+  delegate :playing?, :time_left, :track_almost_over?, to: :playback_state
 
   def playback_state
     party.owner.spotify_user.playback_state
@@ -59,18 +40,21 @@ class CheckPartyStateJob
 
   def play_next_track_and_requeue
     now_playing = party.play_next_track!
-    wait_for_track(now_playing)
+    requeue_after_submission(now_playing)
   end
 
-  def wait_for(time_ms)
-    wait_time_ms = [time_ms, MAX_WAIT_MS].min
-    wait_time_s = (wait_time_ms - TRACK_CHANGE_THRESHOLD) / 1000
-    CheckPartyStateJob.perform_at(wait_time_s.seconds.from_now, party.id)
+  def requeue_after(duration)
+    adjusted_duration = [duration, MAX_WAIT].min - TRACK_CHANGE_THRESHOLD
+    CheckPartyStateJob.perform_at(adjusted_duration.from_now, party.id)
   end
 
-  def wait_for_track(submission)
-    return wait_for(MAX_WAIT_MS) unless submission
-    wait_time_ms = (submission.track.duration_ms - TRACK_CHANGE_THRESHOLD) / 1000
-    wait_for(wait_time_ms)
+  def requeue_after_submission(submission)
+    return requeue_after(MAX_WAIT) unless submission
+
+    requeue_after(submission_duration(submission))
+  end
+
+  def submission_duration(submission)
+    (submission.track.duration_ms / 1000).seconds
   end
 end
