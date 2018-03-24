@@ -12,5 +12,9 @@ FactoryBot.define do
     trait :played do
       queue_status :played
     end
+
+    trait :skipped do
+      queue_status :skipped
+    end
   end
 end
