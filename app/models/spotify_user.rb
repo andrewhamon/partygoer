@@ -28,7 +28,7 @@ class SpotifyUser < ApplicationRecord
   end
 
   def playback_state
-    api_request(:get, "/me/player")
+    @playback_state ||= PlaybackState.from_spotify_hash(api_request(:get, "/me/player"))
   end
 
   def play(track = nil)

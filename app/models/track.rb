@@ -29,4 +29,8 @@ class Track < ApplicationRecord
     track = RSpotify::Track.find(id)
     from_rspotify_track(track)
   end
+
+  def duration
+    (duration_ms / 1000.0).seconds
+  end
 end

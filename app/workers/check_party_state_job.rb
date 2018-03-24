@@ -1,13 +1,17 @@
 class CheckPartyStateJob
   include Sidekiq::Worker
 
-  # Not real crossfade, but soonest we change tracks
-  CROSSFADE_TIME_MS = 500
+  attr_reader :party
 
-  MAX_WAIT_MS = 60 * 1000
+  # Change to the next track slightly before the current one ends
+  TRACK_CHANGE_THRESHOLD = 0.5.seconds
+
+  # Re-run this job at least this often
+  MAX_WAIT = 60.seconds
 
   def perform(party_id)
     @party = Party.find_by(id: party_id)
+
     # In case party gets destroyed
     return unless party
     # Stop checking if party is dead
@@ -15,57 +19,35 @@ class CheckPartyStateJob
     # Cant really do anything if not connected to a spotify account
     return unless party.owner.spotify_user
 
-    playback_state = party.owner.spotify_user.playback_state
-
-    is_playing = playback_state["is_playing"]
-    # If nothing playing, play the next track
-    unless is_playing
-      Rails.logger.info("Nothing playing, playing next")
-      now_playing = party.play_next_track!
-      wait_for_track(now_playing)
-      return
-    end
-
-    progress_ms = playback_state["progress_ms"]
-    duration_ms = playback_state["item"]["duration_ms"]
-    time_left_ms = duration_ms - progress_ms
-
-    # If almost over, go ahead and play next track
-    if time_left_ms < CROSSFADE_TIME_MS
-      Rails.logger.info("Close to new track, playing next")
-      now_playing = party.play_next_track!
-      wait_for_track(now_playing)
-      return
-    # else wait til end of current track
+    if playing?
+      if track_almost_over?
+        play_next_track_and_requeue
+      else
+        requeue_after(time_left)
+      end
     else
-      Rails.logger.info("Next track far away, waiting")
-      wait_time = time_left_ms.to_f - CROSSFADE_TIME_MS
-      wait_for(wait_time)
-      return
+      play_next_track_and_requeue
     end
-  rescue StandardError => e
-    # In case I really fucked up
-    Rails.logger.error("Rescued in CheckPartyStateJob for party #{party_id} named #{party.name}")
-    Rails.logger.error(e)
-    Rails.logger.error(e.backtrace)
-    wait_for(MAX_WAIT_MS)
   end
 
   private
 
-  def party
-    @party
+  delegate :playback_state, to: :party
+  delegate :playing?, :time_left, :track_almost_over?, to: :playback_state
+
+  def play_next_track_and_requeue
+    now_playing = party.play_next_track!
+    requeue_after_submission(now_playing)
   end
 
-  def wait_for(time_ms)
-    wait_time_ms = [time_ms, MAX_WAIT_MS].min
-    wait_time_s = (wait_time_ms - CROSSFADE_TIME_MS) / 1000
-    CheckPartyStateJob.perform_at(wait_time_s.seconds.from_now, party.id)
+  def requeue_after(duration)
+    adjusted_duration = [duration, MAX_WAIT].min - TRACK_CHANGE_THRESHOLD
+    CheckPartyStateJob.perform_in(adjusted_duration, party.id)
   end
 
-  def wait_for_track(submission)
-    return wait_for(MAX_WAIT_MS) unless submission
-    wait_time_ms = (submission.track.duration_ms - CROSSFADE_TIME_MS) / 1000
-    wait_for(wait_time_ms)
+  def requeue_after_submission(submission)
+    return requeue_after(MAX_WAIT) unless submission
+
+    requeue_after(submission.track.duration)
   end
 end
