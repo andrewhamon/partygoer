@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180227231257) do
+ActiveRecord::Schema.define(version: 20180324150035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,16 +44,12 @@ ActiveRecord::Schema.define(version: 20180227231257) do
     t.bigint "track_id", null: false
     t.bigint "party_id", null: false
     t.integer "score", default: 0, null: false
-    t.datetime "played_at"
-    t.datetime "skipped_at"
-    t.boolean "playing", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "queue_status", default: 0, null: false
     t.index ["party_id"], name: "index_submissions_on_party_id"
-    t.index ["played_at"], name: "index_submissions_on_played_at"
-    t.index ["playing"], name: "index_submissions_on_playing"
+    t.index ["queue_status"], name: "index_submissions_on_queue_status"
     t.index ["score"], name: "index_submissions_on_score"
-    t.index ["skipped_at"], name: "index_submissions_on_skipped_at"
     t.index ["track_id"], name: "index_submissions_on_track_id"
     t.index ["user_id"], name: "index_submissions_on_user_id"
   end

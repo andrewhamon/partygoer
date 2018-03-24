@@ -14,7 +14,7 @@
 class Party < ApplicationRecord
   belongs_to :owner, class_name: "User"
   has_many :submissions, dependent: :destroy
-  has_many :active_submissions, -> { queued_or_played.queue_order }, class_name: "Submission"
+  has_many :active_submissions, -> { queued.or(playing).queue_order }, class_name: "Submission"
 
   scope :current, -> { first }
 
@@ -27,7 +27,7 @@ class Party < ApplicationRecord
   after_touch :push_to_channel
 
   def play_next_track!
-    submissions.where(playing: true).update_all(playing: false, played_at: Time.now)
+    submissions.playing.each(&:played!)
     play_next_in_queue
   end
 
@@ -38,11 +38,11 @@ class Party < ApplicationRecord
   private
 
   def play_next_in_queue
-    next_submission = submissions.unplayed.first
+    next_submission = submissions.queue_order.queued.first
     return unless next_submission
 
     owner.spotify_user&.play(next_submission.track)
-    next_submission.update(playing: true)
+    next_submission.playing!
     next_submission
   end
 
