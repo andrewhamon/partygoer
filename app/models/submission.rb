@@ -22,7 +22,7 @@ class Submission < ApplicationRecord
 
   has_many :votes, dependent: :destroy
 
-  enum queue_status: %i[queued playing played]
+  enum queue_status: %i[queued playing played skipped]
 
   scope :queue_order, -> { order_by_playing.order(score: :desc, created_at: :asc) }
   scope :order_by_playing, -> do
