@@ -1,4 +1,4 @@
-class CheckPartyStateJob
+class SynchronizePlaybackStateWorker
   include Sidekiq::Worker
 
   attr_reader :party
@@ -42,7 +42,7 @@ class CheckPartyStateJob
 
   def requeue_after(duration)
     adjusted_duration = [duration, MAX_WAIT].min - TRACK_CHANGE_THRESHOLD
-    CheckPartyStateJob.perform_in(adjusted_duration, party.id)
+    self.class.perform_in(adjusted_duration, party.id)
   end
 
   def requeue_after_submission(submission)

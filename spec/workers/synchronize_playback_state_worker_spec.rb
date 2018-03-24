@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CheckPartyStateJob, type: :job do
+RSpec.describe SynchronizePlaybackStateWorker, type: :job do
   let(:party) { create(:party) }
 
   before do
