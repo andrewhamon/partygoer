@@ -6,7 +6,15 @@ FactoryBot.define do
     score { rand(0..3) }
 
     trait :playing do
-      playing true
+      queue_status :playing
+    end
+
+    trait :played do
+      queue_status :played
+    end
+
+    trait :skipped do
+      queue_status :skipped
     end
   end
 end

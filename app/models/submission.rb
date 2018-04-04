@@ -22,10 +22,14 @@ class Submission < ApplicationRecord
 
   has_many :votes, dependent: :destroy
 
-  scope :playing, -> { where(playing: true) }
-  scope :unplayed, -> { where(playing: false, played_at: nil, skipped_at: nil).queue_order }
-  scope :queued_or_played, -> { where(skipped_at: nil, played_at: nil) }
-  scope :queue_order, -> { order(playing: :desc, score: :desc, created_at: :asc) }
+  enum queue_status: %i[queued playing played skipped]
+
+  scope :queue_order, -> { order_by_playing.order(score: :desc, created_at: :asc) }
+  scope :order_by_playing, -> do
+    order(<<-SQL)
+      case #{table_name}.queue_status when #{queue_statuses[:playing]} then 0 else 1 end
+    SQL
+  end
 
   def update_score!
     update_attributes(score: votes.sum(:value))
