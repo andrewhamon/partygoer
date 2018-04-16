@@ -2,9 +2,14 @@ Mutations::CreateUser = GraphQL::Relay::Mutation.define do
   name "CreateUser"
   return_field :token, !types.String
 
-  resolve ->(_, _, ctx) do
+  input_field :phoneNumber, !types.String
+
+  resolve ->(_, args, _) do
+    user = User.create!(phone_number: args[:phoneNumber])
+    SendVerificationPinWorker.perform(user.id)
+
     {
-      token: (ctx[:current_user] || User.create!).token,
+      token: user.token,
     }
   end
 end
