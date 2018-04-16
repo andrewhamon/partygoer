@@ -3,9 +3,10 @@ Mutations::VerifyUser = GraphQL::Relay::Mutation.define do
   return_field :verified, !types.Boolean
 
   input_field :pin, !types.String
+  input_field :token, !types.String
 
   resolve ->(_, args, ctx) do
-    user = ctx[:current_user]
+    user = User.find_by(token: args[:token])
     if ActiveSupport::SecurityUtils.secure_compare(user.pin, args[:pin])
       user.update!(verified: true)
     end
