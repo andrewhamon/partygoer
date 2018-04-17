@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180227231257) do
+ActiveRecord::Schema.define(version: 20180417021013) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20180227231257) do
     t.index ["score"], name: "index_submissions_on_score"
     t.index ["skipped_at"], name: "index_submissions_on_skipped_at"
     t.index ["track_id"], name: "index_submissions_on_track_id"
+    t.index ["user_id", "track_id", "party_id"], name: "index_submissions_on_user_id_and_track_id_and_party_id", unique: true
     t.index ["user_id"], name: "index_submissions_on_user_id"
   end
 
