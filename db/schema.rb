@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180227231257) do
+ActiveRecord::Schema.define(version: 20180416173957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,8 +74,12 @@ ActiveRecord::Schema.define(version: 20180227231257) do
     t.datetime "updated_at", null: false
     t.bigint "current_party_id"
     t.bigint "spotify_user_id"
+    t.string "phone_number", null: false
+    t.string "pin", null: false
+    t.boolean "verified", default: false, null: false
     t.index "ll_to_earth(lat, lng)", name: "index_users_on_ll_to_earth_lat_lng", using: :gist
     t.index ["current_party_id"], name: "index_users_on_current_party_id"
+    t.index ["phone_number"], name: "index_users_on_phone_number", unique: true
     t.index ["spotify_user_id"], name: "index_users_on_spotify_user_id"
     t.index ["token"], name: "index_users_on_token", unique: true
   end

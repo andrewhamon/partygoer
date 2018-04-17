@@ -4,4 +4,5 @@ Types::MutationType = GraphQL::ObjectType.define do
   field :createSubmission, Mutations::CreateSubmission.field
   field :createUser, Mutations::CreateUser.field
   field :createVote, Mutations::CreateVote.field
+  field :verifyUser, Mutations::VerifyUser.field
 end

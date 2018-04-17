@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   def set_current_user
     authenticate_with_http_token do |token|
-      @current_user = User.find_by(token: token)
+      @current_user = User.find_by(token: token, verified: true)
     end
   end
 end

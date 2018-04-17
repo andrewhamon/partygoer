@@ -18,6 +18,7 @@ gem "rack-cors", require: "rack/cors"
 gem "rspotify"
 
 gem "graphql"
+gem "twilio-ruby", "~> 4.1.0"
 
 group :development, :test do
   gem "annotate"

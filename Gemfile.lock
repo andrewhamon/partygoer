@@ -234,6 +234,10 @@ GEM
     thor (0.20.0)
     thread_safe (0.3.6)
     tilt (2.0.8)
+    twilio-ruby (4.1.0)
+      builder (>= 2.1.2)
+      jwt (~> 1.0)
+      multi_json (>= 1.3.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     uglifier (4.1.6)
@@ -277,6 +281,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   selenium-webdriver
   sidekiq
+  twilio-ruby (~> 4.1.0)
   tzinfo-data
   uglifier (>= 1.3.0)
   web-console (>= 3.3.0)
