@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180416173957) do
+ActiveRecord::Schema.define(version: 20180424152034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,16 @@ ActiveRecord::Schema.define(version: 20180416173957) do
     t.datetime "updated_at", null: false
     t.index "ll_to_earth(lat, lng)", name: "index_parties_on_ll_to_earth_lat_lng", using: :gist
     t.index ["owner_id"], name: "index_parties_on_owner_id"
+  end
+
+  create_table "sessions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "token", null: false
+    t.string "pin", null: false
+    t.boolean "verified", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
   create_table "spotify_users", force: :cascade do |t|
@@ -55,6 +65,7 @@ ActiveRecord::Schema.define(version: 20180416173957) do
     t.index ["score"], name: "index_submissions_on_score"
     t.index ["skipped_at"], name: "index_submissions_on_skipped_at"
     t.index ["track_id"], name: "index_submissions_on_track_id"
+    t.index ["user_id", "track_id", "party_id"], name: "index_submissions_on_user_id_and_track_id_and_party_id", unique: true
     t.index ["user_id"], name: "index_submissions_on_user_id"
   end
 
@@ -67,7 +78,6 @@ ActiveRecord::Schema.define(version: 20180416173957) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "token", null: false
     t.float "lat"
     t.float "lng"
     t.datetime "created_at", null: false
@@ -75,13 +85,10 @@ ActiveRecord::Schema.define(version: 20180416173957) do
     t.bigint "current_party_id"
     t.bigint "spotify_user_id"
     t.string "phone_number", null: false
-    t.string "pin", null: false
-    t.boolean "verified", default: false, null: false
     t.index "ll_to_earth(lat, lng)", name: "index_users_on_ll_to_earth_lat_lng", using: :gist
     t.index ["current_party_id"], name: "index_users_on_current_party_id"
     t.index ["phone_number"], name: "index_users_on_phone_number", unique: true
     t.index ["spotify_user_id"], name: "index_users_on_spotify_user_id"
-    t.index ["token"], name: "index_users_on_token", unique: true
   end
 
   create_table "votes", force: :cascade do |t|
@@ -96,6 +103,7 @@ ActiveRecord::Schema.define(version: 20180416173957) do
   end
 
   add_foreign_key "parties", "users", column: "owner_id"
+  add_foreign_key "sessions", "users"
   add_foreign_key "submissions", "parties"
   add_foreign_key "submissions", "tracks"
   add_foreign_key "submissions", "users"

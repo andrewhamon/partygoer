@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_many :parties_hosted, class_name: "Party", foreign_key: "owner_id"
   has_many :votes
   has_many :submissions
+  has_many :sessions
 
   def upvote!(submission)
     vote = votes.find_or_initialize_by(submission: submission)
