@@ -21,7 +21,7 @@ class User < ApplicationRecord
   has_many :sessions
 
   def self.find_by_verified_token(token)
-    joins(:sessions).where(sessions: { token: token, verified: true })
+    joins(:sessions).find_by(sessions: { token: token, verified: true })
   end
 
   def upvote!(submission)
