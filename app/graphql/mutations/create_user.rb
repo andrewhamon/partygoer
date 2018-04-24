@@ -6,10 +6,11 @@ Mutations::CreateUser = GraphQL::Relay::Mutation.define do
 
   resolve ->(_, args, _) do
     user = User.create!(phone_number: args[:phoneNumber])
-    SendVerificationPinWorker.perform(user.id)
+    session = Session.create!(user: user)
+    SendVerificationPinWorker.perform_async(session.id)
 
     {
-      token: user.token,
+      token: session.token,
     }
   end
 end

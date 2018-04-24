@@ -13,8 +13,6 @@
 #
 
 class User < ApplicationRecord
-  before_create :generate_token
-  before_create :generate_pin
   belongs_to :current_party, class_name: "Party", optional: true
   belongs_to :spotify_user, optional: true
   has_many :parties_hosted, class_name: "Party", foreign_key: "owner_id"
@@ -43,15 +41,5 @@ class User < ApplicationRecord
 
   def find_vote_on(submission)
     votes.index_by(&:submission_id)[submission.id]
-  end
-
-  private
-
-  def generate_token
-    self.token ||= SecureRandom.uuid
-  end
-
-  def generate_pin
-    self.pin ||= SecureRandom.random_number(9999).to_s.rjust(4, "0")
   end
 end
