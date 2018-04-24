@@ -6,12 +6,12 @@ Mutations::VerifyUser = GraphQL::Relay::Mutation.define do
   input_field :token, !types.String
 
   resolve ->(_, args, ctx) do
-    user = User.find_by(token: args[:token])
-    if ActiveSupport::SecurityUtils.secure_compare(user.pin, args[:pin])
-      user.update!(verified: true)
+    session = Session.find_by(token: args[:token])
+    if ActiveSupport::SecurityUtils.secure_compare(session.pin, args[:pin])
+      session.update!(verified: true)
     end
     {
-      verified: user.verified,
+      verified: session.verified,
     }
   end
 end
