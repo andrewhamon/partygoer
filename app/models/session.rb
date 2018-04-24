@@ -11,10 +11,11 @@ class Session < ApplicationRecord
   end
 
   def generate_pin
-    # loop do
-    #   pin = SecureRandom.random_number(9999).to_s.rjust(4, "0")
-    #   break unless Session.exists?(pin: pin)
-    # end
-    self.pin ||= SecureRandom.random_number(9999).to_s.rjust(4, "0")
+    return if pin?
+
+    loop do
+      self.pin = SecureRandom.random_number(9999).to_s.rjust(4, "0")
+      break unless Session.exists?(pin: pin)
+    end
   end
 end
