@@ -5,14 +5,14 @@ class SendVerificationPinWorker
   TWILIO_AUTH_TOKEN = ENV.fetch("TWILIO_AUTH_TOKEN")
   TWILIO_PHONE_NUMBER = ENV.fetch("TWILIO_PHONE_NUMBER")
 
-  attr_reader :user
+  attr_reader :session
 
-  def perform(user_id)
-    @user = User.find(user_id)
+  def perform(session_id)
+    @session = Session.find(session_id)
     twilio_client.messages.create(
-      to: user.phone_number,
+      to: session.user.phone_number,
       from: TWILIO_PHONE_NUMBER,
-      body: "Your PIN is #{user.pin}",
+      body: "Your PIN is #{session.pin}",
     )
   end
 
