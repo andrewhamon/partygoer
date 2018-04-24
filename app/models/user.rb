@@ -20,6 +20,10 @@ class User < ApplicationRecord
   has_many :submissions
   has_many :sessions
 
+  def self.find_by_verified_token(token)
+    joins(:sessions).where(sessions: { token: token, verified: true })
+  end
+
   def upvote!(submission)
     vote = votes.find_or_initialize_by(submission: submission)
     vote.update!(value: 1)
