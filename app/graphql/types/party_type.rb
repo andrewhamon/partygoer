@@ -1,6 +1,7 @@
 Types::PartyType = GraphQL::ObjectType.define do
   name "Party"
 
+  field :id, !types.ID
   field :name, !types.String
 
   field :activeSubmissions, !types[!Types::SubmissionType] do
