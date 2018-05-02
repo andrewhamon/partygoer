@@ -2,6 +2,8 @@ AllCops:
   Exclude:
     - db/schema.rb
     - bin/*
+    - "vendor/**/*"
+    - "tmp/**/*"
 
 Naming/AccessorMethodName:
   Description: Check the naming of accessor methods for get_/set_.
