@@ -4,11 +4,15 @@
     <title>Partygoer</title>
     <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= javascript_include_tag 'application' %>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <%= stylesheet_link_tag "application", media: "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= stylesheet_pack_tag "application" %>
+    <%= javascript_pack_tag "application" %>
   </head>
 
   <body>
-    <%= yield %>
+    <main></main>
   </body>
 </html>

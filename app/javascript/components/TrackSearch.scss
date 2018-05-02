@@ -1,0 +1,64 @@
+.track-search {
+  position: sticky;
+  top: 0;
+  margin: -20px;
+  margin-bottom: 0;
+  background: rgba(255, 255, 255, 0);
+  padding-top: 0;
+
+  &.searching {
+    z-index: 2;
+    overflow-y: auto;
+    background: white;
+    height: 100vh;
+
+    a {
+      max-width: 90px;
+      margin-right: 0;
+    }
+  }
+
+  header {
+    background: linear-gradient(white, rgba(255, 255, 255, 0.97));
+    display: flex;
+    align-items: baseline;
+    position: sticky;
+    top: 0;
+    padding: 20px;
+    z-index: 3;
+  }
+
+  input {
+    background: #f3f3f3;
+    appearance: none;
+    font: inherit;
+    border: none;
+    padding: 11px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+
+    &:focus {
+      outline: 0;
+    }
+  }
+
+  a {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    display: block;
+    overflow: hidden;
+    color: #4493de;
+    text-decoration: none;
+    transition: all 0.5s ease;
+    max-width: 0;
+    margin-left: 15px;
+    margin-right: -15px;
+  }
+
+  .search-results {
+    padding: 20px;
+    padding-top: 0;
+  }
+}

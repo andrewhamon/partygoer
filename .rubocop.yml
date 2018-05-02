@@ -4,6 +4,7 @@ AllCops:
     - bin/*
     - "vendor/**/*"
     - "tmp/**/*"
+    - "node_modules/**/*"
 
 Naming/AccessorMethodName:
   Description: Check the naming of accessor methods for get_/set_.
