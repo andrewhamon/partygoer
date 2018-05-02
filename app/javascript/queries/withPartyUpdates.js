@@ -24,7 +24,7 @@ export const FetchParty = gql`
 const SubscribeToParty = gql`
   subscription SubscribeToParty {
     partyChanged {
-      active_submissions {
+      activeSubmissions {
         id
         score
         playing

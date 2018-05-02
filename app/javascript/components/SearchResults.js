@@ -9,7 +9,7 @@ import gql from 'graphql-tag'
 
 const FetchSearchResults = gql`
   query FetchSearchResults($query: String!) {
-    search_results(query: $query) {
+    searchResults(query: $query) {
       id
       uri
       name
@@ -20,7 +20,7 @@ const FetchSearchResults = gql`
 
 const CreateSubmission = gql`
   mutation CreateSubmission($spotifyTrackId: String!) {
-    create_submission(input: { spotify_track_id: $spotifyTrackId }) {
+    createSubmission(input: { spotifyTrackId: $spotifyTrackId }) {
       id
     }
   }
@@ -53,7 +53,7 @@ export default class SearchResults extends Component {
       )
     }
 
-    const tracks = data.search_results
+    const tracks = data.searchResults
 
     return (
       <div className='search-results'>

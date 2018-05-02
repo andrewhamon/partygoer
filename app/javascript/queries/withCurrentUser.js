@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 
 const CreateUser = gql`
   mutation CreateUser {
-    createUser(input: { phoneNumber: "+18133168895" }) { token }
+    createUser(input: { phoneNumber: "+18133168896" }) { token }
   }
 `
 
