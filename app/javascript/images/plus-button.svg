@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>plus-button</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="iPhone-8-Copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-334.000000, -124.000000)">
+        <g id="plus-button" transform="translate(335.000000, 125.000000)">
+            <circle id="Oval" stroke="#4493DE" cx="10" cy="10" r="10.5"></circle>
+            <text id="+" font-family="Roboto-Regular, Roboto" font-size="17" font-weight="normal" fill="#4493DE">
+                <tspan x="5.18139648" y="16">+</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

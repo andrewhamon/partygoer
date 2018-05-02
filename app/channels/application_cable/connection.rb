@@ -9,7 +9,7 @@ module ApplicationCable
     private
 
     def find_verified_user
-      User.find_by(token: request.params[:token])
+      User.find_by_verified_token(request.params[:token])
     end
   end
 end

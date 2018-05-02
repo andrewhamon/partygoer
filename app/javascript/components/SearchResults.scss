@@ -1,0 +1,21 @@
+.search-results {
+  .search-result {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: 20px;
+    background: url('../images/plus-button.svg') right center no-repeat;
+
+    .track {
+      flex-grow: 1;
+      overflow: hidden;
+      padding-right: 35px;
+
+      .name, .artists {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}

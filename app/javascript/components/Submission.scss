@@ -1,0 +1,33 @@
+.submission {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  .track {
+    flex-grow: 1;
+    overflow: hidden;
+
+    .name, .artists {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .submission-aside {
+    margin-left: 20px;
+  }
+
+  .playing-indicator {
+    position: absolute;
+    left: -28px;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+
+  &.playing {
+    .playing-indicator {
+      opacity: 1;
+    }
+  }
+}

@@ -10,6 +10,7 @@ gem "puma", "~> 3.7"
 gem "rails", "~> 5.1.5"
 gem "sass-rails", "~> 5.0"
 gem "uglifier", ">= 1.3.0"
+gem "webpacker", "~> 3.5"
 
 gem "redis"
 gem "sidekiq"

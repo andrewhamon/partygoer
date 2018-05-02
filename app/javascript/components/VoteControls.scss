@@ -1,0 +1,36 @@
+.vote-controls {
+  display: flex;
+  align-items: center;
+
+  .score {
+    margin: 0 10px;
+    text-align: center;
+    min-width: 20px;
+    color: #454545;
+  }
+
+  .upvote, .downvote {
+    display: block;
+    width: 28px;
+    height: 18px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .downvote {
+    background-image: url('../images/downvote.png');
+
+    &.selected {
+      background-image: url('../images/downvote-active.png');
+    }
+  }
+
+  .upvote {
+    background-image: url('../images/upvote.png');
+
+    &.selected {
+      background-image: url('../images/upvote-active.png');
+    }
+  }
+}

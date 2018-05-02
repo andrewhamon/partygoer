@@ -1,0 +1,39 @@
+.vote-view {
+  padding: 20px;
+
+  .track-search {
+    margin-bottom: 40px;
+    z-index: 1000000;
+  }
+
+  .queue {
+    padding: 0 20px;
+    z-index: 2;
+  }
+
+  .album-art {
+    border-radius: 20px;
+    box-shadow: 0px 3px 35px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .submission {
+    margin-bottom: 20px;
+  }
+
+  .name {
+    font-size: 22px;
+    font-weight: 500;
+  }
+
+  .artists {
+    opacity: 0.5;
+    font-size: 17px;
+  }
+
+  .score {
+    font-size: 15px;
+    font-weight: 800;
+  }
+}
