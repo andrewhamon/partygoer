@@ -1,29 +1,27 @@
 import React, { Component } from 'react'
 
+import Authenticate from './Authenticate'
+
 import withCurrentUser from '../queries/withCurrentUser'
 
 @withCurrentUser
 export default class WithCurrentUser extends Component {
   constructor () {
     super()
-    this.state = { loaded: false }
+    this.state = { currentUserSet: false }
   }
 
   componentDidMount () {
-    if (!localStorage.getItem('token')) {
-      this.props.mutate()
-        .then(({ data }) => localStorage.setItem('token', data.createUser.token))
-        .then(() => this.setState({ loaded: true }))
-    } else {
-      this.setState({ loaded: true })
+    if (localStorage.getItem('token')) {
+      this.setState({ currentUserSet: true })
     }
   }
 
   render () {
-    if (this.state.loaded) {
+    if (this.state.currentUserSet) {
       return this.props.children
+    } else {
+      return <Authenticate />
     }
-
-    return null
   }
 }

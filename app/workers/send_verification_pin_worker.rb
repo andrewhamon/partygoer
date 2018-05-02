@@ -9,11 +9,11 @@ class SendVerificationPinWorker
 
   def perform(session_id)
     @session = Session.find(session_id)
-    # twilio_client.messages.create(
-    #   to: session.user.phone_number,
-    #   from: TWILIO_PHONE_NUMBER,
-    #   body: "Your PIN is #{session.pin}",
-    # )
+    twilio_client.messages.create(
+      to: session.user.phone_number,
+      from: TWILIO_PHONE_NUMBER,
+      body: "Partygoer code: #{session.pin}",
+    )
   end
 
   private

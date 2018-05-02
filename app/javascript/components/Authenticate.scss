@@ -1,0 +1,17 @@
+.authenticate {
+  input {
+    background: #f3f3f3;
+    appearance: none;
+    font: inherit;
+    border: none;
+    padding: 11px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+
+    &:focus {
+      outline: 0;
+    }
+  }
+}
