@@ -67,7 +67,6 @@ ActiveRecord::Schema.define(version: 20180424162942) do
     t.index ["score"], name: "index_submissions_on_score"
     t.index ["skipped_at"], name: "index_submissions_on_skipped_at"
     t.index ["track_id"], name: "index_submissions_on_track_id"
-    t.index ["user_id", "track_id", "party_id"], name: "index_submissions_on_user_id_and_track_id_and_party_id", unique: true
     t.index ["user_id"], name: "index_submissions_on_user_id"
   end
 
